@@ -21,7 +21,14 @@ public class Game extends Canvas implements Runnable {
 	
 	private BufferedImage image;
 	
+	private Spritesheet sheet;
+	private BufferedImage player;
+	
+	//278x307 player width and height ################
+	
 	public Game() {
+		sheet = new Spritesheet("/mago.jpg");
+		player = sheet.getSprite(0, 0, 16, 16);
 		setPreferredSize(new Dimension(WIDTH * SCALE , HEIGHT * SCALE));
 		initFrame();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -36,7 +43,7 @@ public class Game extends Canvas implements Runnable {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
-	//a
+	
 	
 	public synchronized void start() {
 		thread = new Thread(this);
@@ -86,6 +93,11 @@ public class Game extends Canvas implements Runnable {
 		g.setFont(new Font("Arial", Font.BOLD, 20));
 		g.drawString("Olá mundo", 4, 90);
 		
+		/* Renderização do jogo */
+		
+		g.drawImage(player, 20, 20, null);
+		/***/
+		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		bs.show();
