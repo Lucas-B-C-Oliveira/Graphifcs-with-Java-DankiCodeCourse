@@ -3,6 +3,7 @@ package graficos;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -14,9 +15,9 @@ public class Game extends Canvas implements Runnable {
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning;
-	private final int WIDTH = 160;
-	private final int HEIGHT = 120;
-	private final int SCALE = 3;
+	private final int WIDTH = 240;
+	private final int HEIGHT = 160;
+	private final int SCALE = 4;
 	
 	private BufferedImage image;
 	
@@ -45,6 +46,13 @@ public class Game extends Canvas implements Runnable {
 	
 	public synchronized void stop() {
 		
+		isRunning = false;
+		
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String args[]) {
@@ -70,6 +78,14 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = image.getGraphics();
 		g.setColor(new Color(5, 5, 50));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		g.setColor(Color.cyan);
+		g.fillRect(0, 0, 1, 1);
+		
+		g.setColor(Color.white);
+		g.setFont(new Font("Arial", Font.BOLD, 20));
+		g.drawString("Olá mundo", 4, 90);
+		
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		bs.show();
@@ -104,6 +120,7 @@ public class Game extends Canvas implements Runnable {
 				
 			}
 		}
+		stop();
 	}
 	
 }
