@@ -23,13 +23,26 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImage image;
 	
 	private Spritesheet sheet;
-	private BufferedImage player;
+	private BufferedImage[] player;
+	
+	private int frames = 0;
+	private int maxFrames = 10;
+	private int curAnimation = 0;
+	private int maxAnimation = 7;
 	
 	//278x307 player width and height ################
 	
 	public Game() {
-		sheet = new Spritesheet("/mago.jpg");
-		player = sheet.getSprite(0, 0, 16, 16);
+		sheet = new Spritesheet("/mage.png");
+		player = new BufferedImage[8];
+		player[0] = sheet.getSprite(0, 0, 16, 16);
+		player[1] = sheet.getSprite(16, 0, 16, 16);
+		player[2] = sheet.getSprite(32, 0, 16, 16);
+		player[3] = sheet.getSprite(48, 0, 16, 16);
+		player[4] = sheet.getSprite(64, 0, 16, 16);
+		player[5] = sheet.getSprite(80, 0, 16, 16);
+		player[6] = sheet.getSprite(96, 0, 16, 16);
+		player[7] = sheet.getSprite(112, 0, 16, 16);
 		setPreferredSize(new Dimension(WIDTH * SCALE , HEIGHT * SCALE));
 		initFrame();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -70,8 +83,17 @@ public class Game extends Canvas implements Runnable {
 		
 	}
 	
-	public void update() {
-		
+	public void update() {	
+			
+		frames++;
+		if(frames > maxFrames) {
+			frames = 0;
+			curAnimation++;
+			
+			if(curAnimation > maxAnimation) {
+				curAnimation = 0;
+			}
+		}
 	}
 	
 	public void render() {
@@ -95,17 +117,16 @@ public class Game extends Canvas implements Runnable {
 		g.drawString("Olá mundo", 4, 90);
 		
 		/* Renderização do jogo */
+		
 		Graphics2D g2 = (Graphics2D) g;
 
-		
-		g2.rotate(Math.toRadians(45), 98, 98); //Rotaciona
-		g.drawImage(player, 90, 0, null); //Desenha
-		
+		g2.drawImage(player[curAnimation], 
+				WIDTH/2 - (player[curAnimation].getWidth() /2),
+				HEIGHT/2 - (player[curAnimation].getHeight()/2), null); //Desenha
 
-		g2.setColor(new Color(0, 0, 0, 100)); //Seta a cor
-		g2.rotate(Math.toRadians(-45), 98, 98); //Rotaciona
-		g2.fillRect(0, 0, WIDTH, HEIGHT); //Desenha
+		
 		/***/
+		
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
