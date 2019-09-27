@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
@@ -94,8 +95,16 @@ public class Game extends Canvas implements Runnable {
 		g.drawString("Olá mundo", 4, 90);
 		
 		/* Renderização do jogo */
+		Graphics2D g2 = (Graphics2D) g;
+
 		
-		g.drawImage(player, 20, 20, null);
+		g2.rotate(Math.toRadians(45), 98, 98); //Rotaciona
+		g.drawImage(player, 90, 0, null); //Desenha
+		
+
+		g2.setColor(new Color(0, 0, 0, 100)); //Seta a cor
+		g2.rotate(Math.toRadians(-45), 98, 98); //Rotaciona
+		g2.fillRect(0, 0, WIDTH, HEIGHT); //Desenha
 		/***/
 		g.dispose();
 		g = bs.getDrawGraphics();
